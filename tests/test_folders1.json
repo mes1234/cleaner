@@ -1,0 +1,18 @@
+{
+    "test_folder_1": {
+        "file1.py": null,
+        "file2.pyc": null,
+        "sub_folder_1": {
+            "file1.py": null,
+            "file2.pyc": null
+        },
+        "sub_folder_2": {
+            "file1.py": null,
+            "file2.pyc": null,
+            "sub_folder_1": {
+                "file1.py": null,
+                "file2.pyc": null
+            }
+        }
+    }
+}
