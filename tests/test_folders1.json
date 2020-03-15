@@ -1,17 +1,43 @@
 {
     "test_folder_1": {
-        "file1.py": null,
-        "file2.pyc": null,
+        "0": {
+            "type": true
+        },
+        "file1.py": {
+            "type": true
+        },
+        "file2.pyc": {
+            "type": false
+        },
         "sub_folder_1": {
-            "file1.py": null,
-            "file2.pyc": null
+            "0": {
+                "type": true
+            },
+            "file1.py": {
+                "type": true
+            },
+            "file2.pyc": {
+                "type": false
+            }
         },
         "sub_folder_2": {
-            "file1.py": null,
-            "file2.pyc": null,
+            "0": {
+                "type": true
+            },
+            "file1.py": {
+                "type": true
+            },
+            "file2.pyc": {
+                "type": false
+            },
             "sub_folder_1": {
-                "file1.py": null,
-                "file2.pyc": null
+                "0": {"type":false},
+                "file1.py": {
+                    "type": true
+                },
+                "file2.pyc": {
+                    "type": true
+                }
             }
         }
     }
