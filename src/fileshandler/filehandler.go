@@ -1,19 +1,27 @@
 //Package fileshandler to handle files in cleaner
 package fileshandler
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
+
+type item struct {
+	status bool
+}
 
 //Discover recurently files in given JSON file
 func Discover(m map[string]interface{}) {
 
 	for k, v := range m {
+		// mItem, ok := v.(interface{})
+		// if ok {
+		// 	fmt.Println(mItem)
+		// }
+		fmt.Println("type:", reflect.Value(v))
 		switch vv := v.(type) {
 		case bool:
-			fmt.Println(k, "is bool", vv)
-		case string:
-			fmt.Println(k, "is string", vv)
-		case float64:
-			fmt.Println(k, "is float64", vv)
+			fmt.Println("its a file", vv)
 		case map[string]interface{}:
 			Discover(vv)
 		default:
