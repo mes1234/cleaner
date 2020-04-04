@@ -1,44 +1,53 @@
-{
-    "test_folder_1": {
-        "0": {
-            "type": true
-        },
-        "file1.py": {
-            "type": true
-        },
-        "file2.pyc": {
-            "type": false
-        },
-        "sub_folder_1": {
-            "0": {
-                "type": true
-            },
-            "file1.py": {
-                "type": true
-            },
-            "file2.pyc": {
-                "type": false
-            }
-        },
-        "sub_folder_2": {
-            "0": {
-                "type": true
-            },
-            "file1.py": {
-                "type": true
-            },
-            "file2.pyc": {
-                "type": false
-            },
-            "sub_folder_1": {
-                "0": {"type":false},
-                "file1.py": {
-                    "type": true
-                },
-                "file2.pyc": {
-                    "type": true
-                }
-            }
-        }
+[
+    {
+        "id": 0,
+        "name": "folder1",
+        "parent": -1,
+        "childs": [
+            1,
+            2,
+            6
+        ],
+        "keep": true
+    },
+    {
+        "id": 1,
+        "name": "file.py",
+        "parent": 0,
+        "keep": true
+    },
+    {
+        "id": 2,
+        "name": "file.pyc",
+        "parent": 0,
+        "keep": false
+    },
+    {
+        "id": 3,
+        "name": "sub_folder",
+        "parent": 0,
+        "childs": [
+            4,
+            5
+        ],
+        "keep": true
+    },
+    {
+        "id": 4,
+        "name": "file.py",
+        "parent": 3,
+        "keep": true
+    },
+    {
+        "id": 5,
+        "name": "file.pyc",
+        "parent": 3,
+        "keep": false
+    },
+    {
+        "id": 6,
+        "name": "file.pyc",
+        "parent": 0,
+        "keep": false
     }
-}
+]

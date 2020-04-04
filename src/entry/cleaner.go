@@ -8,11 +8,10 @@ import (
 )
 
 func main() {
-	var f interface{}
+	var fr fileshandler.FileRaw
 	dat, _ := ioutil.ReadFile("/workspaces/cleaner/tests/test_folders1.json")
-	_ = json.Unmarshal(dat, &f)
-	fmt.Println("Hello, World!")
-	m := f.(map[string]interface{})
-	fileshandler.Discover(m)
+	_ = json.Unmarshal(dat, &fr)
+	f := fr.Discover()
+	fmt.Println(f)
 
 }
