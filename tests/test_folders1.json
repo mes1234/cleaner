@@ -3,10 +3,13 @@
         "id": 0,
         "name": "folder1",
         "parent": -1,
-        "childs": [
+        "childsf": [
             1,
             2,
             6
+        ],
+        "childsd": [
+            3
         ],
         "keep": true
     },
@@ -26,10 +29,11 @@
         "id": 3,
         "name": "sub_folder",
         "parent": 0,
-        "childs": [
+        "childsf": [
             4,
             5
         ],
+        "childsd":[],
         "keep": true
     },
     {
