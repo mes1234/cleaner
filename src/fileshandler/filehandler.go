@@ -1,8 +1,6 @@
 //Package fileshandler to handle files in cleaner
 package fileshandler
 
-import "fmt"
-
 //FileRaw is subitem of raw data for json preprocessor
 type fileRaw struct {
 	ID     int    `json:"id"`
@@ -28,7 +26,7 @@ type Raw []struct {
 type File struct {
 	ID      int
 	Name    string
-	PParent *File
+	PParent *Directory
 	Keep    bool
 }
 
@@ -47,28 +45,51 @@ func copyCommon(src *rawStruct, dest *File) {
 }
 
 //func checkIfExistsAndUpdate verify if given related item exists if not creates
-func checkIfExistsAndUpdate(srcID int, allsrc *Raw, resFile *[]File) {
+func checkIfExistsAndUpdate(srcID int, allsrc *Raw, resFile *[]File, resDirs *[]Directory) {
 	if srcID >= 0 && (*resFile)[srcID].ID == 0 {
 		parentPtr := &((*allsrc)[srcID].fileRawItem)
 		(*resFile)[srcID].update(parentPtr, allsrc, resFile)
 	}
 }
-func (f *Directory) update(src *rawStruct, allsrc *Raw, parents *[]Directory, childs *[]File) {
-	copyCommon(src, f)
-	f.PChilds = make([]*File, len(src.Childs), len(src.Childs))
-	for k, v := range src.Childs {
+func (d *Directory) update(src *rawStruct, allsrc *Raw, dirs *[]Directory, files *[]File) {
+	copyCommon(src, &d.File)
+	d.PChildsD = make([]*Directory, 0, len(src.ChildsDirectories))
+	d.PChildsF = make([]*File, 0, len(src.ChildsFiles))
+	for _, v := range src.ChildsDirectories {
 		childID := v
-		checkIfExistsAndUpdate(childID, allsrc, resFile)
-		f.PChilds[k] = &((*resFile)[childID])
-		fmt.Println(k, v)
+		checkIfExistsAndUpdate(childID, allsrc, files, dirs)
+		if childID >= 0 {
+			for _, v := range *dirs {
+				if v.ID == childID {
+					d.PChildsD = append(d.PChildsD, &v)
+				}
+			}
+		}
+	}
+
+	for _, v := range src.ChildsFiles {
+		childID := v
+		checkIfExistsAndUpdate(childID, allsrc, files, dirs)
+		if childID >= 0 {
+			for _, v := range *files {
+				if v.ID == childID {
+					d.PChildsF = append(d.PChildsF, &v)
+				}
+			}
+		}
 	}
 }
-func (f *File) update(src *rawStruct, allsrc *Raw, parents *[]Directory, childs *[]File) {
+
+func (f *File) update(src *rawStruct, allsrc *Raw, dirs *[]Directory, files *[]File) {
 	copyCommon(src, f)
 	parentID := src.Parent
-	checkIfExistsAndUpdate(parentID, allsrc, parents)
+	checkIfExistsAndUpdate(parentID, allsrc, files, dirs)
 	if parentID >= 0 {
-		f.PParent = &((*parents)[parentID])
+		for _, v := range *dirs {
+			if v.ID == parentID {
+				f.PParent = &v
+			}
+		}
 	}
 }
 
