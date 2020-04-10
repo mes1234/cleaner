@@ -16,5 +16,7 @@ func main() {
 	dirs, files := fd.Split()
 	fmt.Println(dirs)
 	fmt.Println(files)
-
+	Dirs := fileshandler.Directories(*dirs)
+	Dirs.Create("testfolder1")
+	fmt.Println(Dirs)
 }
