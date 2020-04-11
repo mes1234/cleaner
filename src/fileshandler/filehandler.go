@@ -33,7 +33,8 @@ type File struct {
 //With pointers references
 type Directory struct {
 	File
-	PChilds []*Directory
+	PChilds  []*Directory
+	FullPath string
 }
 
 //Directories is abstraction over slice of Directory
@@ -95,29 +96,26 @@ func (f FileRaw) Discover() *[]Directory {
 	return &resFile
 }
 
-//getPathRec creates
-func (f Directory) getPathRec() string {
-
-}
-
 //Create creates folder structure in given root path
 func (f Directories) Create(rootPath string) bool {
-	for _, v := range f {
-		v.create(rootPath)
+	for i := range f {
+		f[i].FullPath = f[i].create(rootPath, "")
 	}
 	return true
 }
 
 //create creates folder structure in given root path
 // need to work on it
-func (f Directory) create(rootPath string) bool {
+func (f *Directory) create(rootPath string, myPath string) string {
 	dir, _ := os.Getwd()
+	var path string
 	switch id := f.PParent; id {
 	case nil:
-		os.MkdirAll(filepath.Join(dir, rootPath, f.Name), 1777)
+		path = filepath.Join(dir, rootPath, f.Name, myPath)
+		os.MkdirAll(path, 1777)
 	default:
-		path := filepath.Join(dir, rootPath, f.Name)
-		f.create(path)
+		path = filepath.Join(f.Name, myPath)
+		path = f.PParent.create(rootPath, path)
 	}
-	return true
+	return path
 }

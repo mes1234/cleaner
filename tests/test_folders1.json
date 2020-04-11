@@ -49,5 +49,20 @@
         "name": "file.pyc",
         "parent": 0,
         "keep": false
+    },
+    {
+        "id": 7,
+        "name": "sub_sub_folder",
+        "parent": 3,
+        "childs": [
+            8
+        ],
+        "keep": false
+    },
+    {
+        "id": 8,
+        "name": "sub_sub_folder_item.py",
+        "parent": 7,
+        "keep": false
     }
 ]
