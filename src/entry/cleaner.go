@@ -18,5 +18,7 @@ func main() {
 	fmt.Println(files)
 	Dirs := fileshandler.Directories(*dirs)
 	Dirs.Create("testfolder1")
+	Files := fileshandler.Files(*files)
+	Files.Create()
 	fmt.Println(Dirs)
 }

@@ -38,13 +38,13 @@ type Directory struct {
 }
 
 //Directories is abstraction over slice of Directory
-type Directories []Directory
+type Directories []*Directory
 
 //Files is abstraction over slice of File
-type Files []File
+type Files []*File
 
 //func checkIfExistsAndUpdate verify if given related item exists if not creates
-func checkIfExistsAndUpdate(srcID int, allsrc *FileRaw, resFile *[]Directory) {
+func checkIfExistsAndUpdate(srcID int, allsrc *FileRaw, resFile *[]*Directory) {
 	if srcID >= 0 && (*resFile)[srcID].ID == 0 {
 		parentPtr := &((*allsrc)[srcID])
 		go (*resFile)[srcID].update(parentPtr, allsrc, resFile)
@@ -52,14 +52,14 @@ func checkIfExistsAndUpdate(srcID int, allsrc *FileRaw, resFile *[]Directory) {
 }
 
 // Split returns two object one files only, second directory only
-func (f Directories) Split() (*[]Directory, *[]File) {
+func (f Directories) Split() (*[]*Directory, *[]*File) {
 
-	resDirs := make([]Directory, 0, 0)
-	resFiles := make([]File, 0, 0)
+	resDirs := make([](*Directory), 0, 0)
+	resFiles := make([](*File), 0, 0)
 	for _, v := range f {
 		switch len(v.PChilds) {
 		case 0:
-			resFiles = append(resFiles, v.File)
+			resFiles = append(resFiles, &v.File)
 		default:
 			resDirs = append(resDirs, v)
 		}
@@ -68,27 +68,27 @@ func (f Directories) Split() (*[]Directory, *[]File) {
 }
 
 //update fils fields in struct and if needed create subitems
-func (f *Directory) update(src *fileRawItem, allsrc *FileRaw, resFile *[]Directory) {
+func (f *Directory) update(src *fileRawItem, allsrc *FileRaw, resFile *[]*Directory) {
 	f.ID = src.ID
 	f.Name = src.Name
 	f.Keep = src.Keep
 	parentID := src.Parent
 	checkIfExistsAndUpdate(parentID, allsrc, resFile)
 	if parentID >= 0 {
-		f.PParent = &((*resFile)[parentID])
+		f.PParent = ((*resFile)[parentID])
 	}
 	f.PChilds = make([]*Directory, len(src.Childs), len(src.Childs))
 	for k, v := range src.Childs {
 		childID := v
 		checkIfExistsAndUpdate(childID, allsrc, resFile)
-		f.PChilds[k] = &((*resFile)[childID])
+		f.PChilds[k] = ((*resFile)[childID])
 		fmt.Println(k, v)
 	}
 }
 
 //Discover recurently files in given JSON file
-func (f FileRaw) Discover() *[]Directory {
-	var resFile = make([]Directory, len(f), len(f))
+func (f FileRaw) Discover() *[]*Directory {
+	var resFile = make([]*Directory, len(f), len(f))
 	for k, v := range f {
 		resFile[k].update(&v, &f, &resFile)
 		fmt.Println(k, v)
@@ -118,4 +118,14 @@ func (f *Directory) create(rootPath string, myPath string) string {
 		path = f.PParent.create(rootPath, path)
 	}
 	return path
+}
+
+//Create all files for given structure
+func (f Files) Create() {
+	for _, v := range f {
+		path := v.PParent.FullPath
+		if path != "" {
+			os.Create(filepath.Join(path, v.Name))
+		}
+	}
 }
