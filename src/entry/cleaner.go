@@ -5,6 +5,8 @@ import (
 	"fileshandler"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 func main() {
@@ -17,7 +19,9 @@ func main() {
 	fmt.Println(dirs)
 	fmt.Println(files)
 	Dirs := fileshandler.Directories(*dirs)
-	Dirs.Create("testfolder1")
+	cwd, _ := os.Getwd()
+	root := filepath.Dir(filepath.Dir(cwd))
+	Dirs.Create(filepath.Join(root, "dummy"))
 	Files := fileshandler.Files(*files)
 	Files.Create()
 	fmt.Println(Dirs)

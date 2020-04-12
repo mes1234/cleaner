@@ -89,6 +89,10 @@ func (f *Directory) update(src *fileRawItem, allsrc *FileRaw, resFile *[]*Direct
 //Discover recurently files in given JSON file
 func (f FileRaw) Discover() *[]*Directory {
 	var resFile = make([]*Directory, len(f), len(f))
+	for k := range f {
+		var newDir Directory
+		resFile[k] = &newDir
+	}
 	for k, v := range f {
 		resFile[k].update(&v, &f, &resFile)
 		fmt.Println(k, v)
